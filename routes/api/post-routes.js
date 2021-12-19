@@ -7,7 +7,7 @@ router.get('/',(req, res) => {
     Post.findAll({
         //Query configuration
         attributes: ['id', 'post_url', 'title', 'created_at'],
-        // order: [['created_at', 'DESC']],
+        order: [['created_at', 'DESC']],
         include: [
             {
                 model: User,
@@ -61,6 +61,30 @@ router.post('/', (req, res) => {
             res.status(500).json(err);
         });
 }); 
+
+router.put('/:id', (req, res) => {
+    Post.update(
+        {
+            title: req.body.title
+        },
+        {
+            where: {
+                id: req.params.id
+            }
+        }
+    )
+        .then(dbPostData => {
+            if (!dbPostData) {
+                res.status(404).json({ message: 'No post found with this id' });
+                return;
+            }
+            res.json(dbPostData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+});
 
 
 module.exports = router;
