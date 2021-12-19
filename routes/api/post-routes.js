@@ -7,6 +7,7 @@ router.get('/',(req, res) => {
     Post.findAll({
         //Query configuration
         attributes: ['id', 'post_url', 'title', 'created_at'],
+        // order: [['created_at', 'DESC']],
         include: [
             {
                 model: User,
@@ -60,4 +61,6 @@ router.post('/', (req, res) => {
             res.status(500).json(err);
         });
 }); 
+
+
 module.exports = router;
